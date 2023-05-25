@@ -12,6 +12,15 @@ red   = { 1  , 0  , 0  }
 green = { 0  , 1  , 0  }
 blue  = { 0  , 0  , 1  }
 
+---------- Figures sizes ----------
+trSmall  = {0, -30, 30, 30, -30, 30}
+trMedium = {0, -50, 50, 50, -50, 50}
+trLarge  = {0, -70, 70, 70, -70, 70}
+
+-- sqSmall  = 50, 50
+-- sqMedium = 70, 70
+-- sqLarge  = 90, 90
+
 local dibujando = false
 local figuraActual = nil
 
@@ -58,7 +67,7 @@ local function insertarFigura(event)
     local y = event.y
     
     if figuraActual == "triangulo" then
-        local triangulo = display.newPolygon(x, y, {0, -50, 50, 50, -50, 50})
+        local triangulo = display.newPolygon(x, y, trSmall)
         triangulo:setFillColor(unpack(red))
         print( "Triangle printed" )
     elseif figuraActual == "cuadrado" then
@@ -67,6 +76,12 @@ local function insertarFigura(event)
         print( "Square printed" )
     end
 end
+
+-- function newAction(state, figure)
+--     dibujando    = state 
+--     figuraActual = figure
+-- end
+
 
 function enableDrawing()
     dibujando    = true
@@ -102,10 +117,14 @@ function createButton(nx, ny, message, action)
     button:addEventListener( "tap", action )
 end
 
+-- local enableDrawing  = newAction(true, nil)
 local drawingButton  = createButton(60 , 30 , "Draw"    , enableDrawing)
+-- local enableErasing  = newAction(false, nil)
 local erasingButton  = createButton(160, 30 , "Erase"   , enableErasing)
 local cleaningButton = createButton(260, 30 , "Clean"   , enableNewScreen)
+-- local triangle       = newAction(false, "triangulo") 
 local triangleButton = createButton(110, 450, "Triangle", triangle)
+-- local square         = newAction(false, "cuadrado")
 local squareButton   = createButton(210, 450, "Square"  , square)
 
 lienzo:addEventListener("touch", dibujar)
