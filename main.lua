@@ -11,15 +11,13 @@ grey  = { 0.5, 0.5, 0.5}
 red   = { 1  , 0  , 0  }
 green = { 0  , 1  , 0  }
 blue  = { 0  , 0  , 1  }
+orange = {1 , 144/255, 0}
+yellow = {1, 1, 0}
 
 ---------- Figures sizes ----------
 trSmall  = {0, -30, 30, 30, -30, 30}
 trMedium = {0, -50, 50, 50, -50, 50}
 trLarge  = {0, -70, 70, 70, -70, 70}
-
--- sqSmall  = 50, 50
--- sqMedium = 70, 70
--- sqLarge  = 90, 90
 
 local dibujando = false
 local figuraActual = nil
@@ -33,10 +31,10 @@ local function dibujarOBorrar(event)
             linea = display.newLine(x, y, x, y)
             linea.strokeWidth = 2
             if dibujando == "dibujo" then
-                linea:setStrokeColor(0, 0, 0) -- Drawing color (black)
+                linea:setStrokeColor(unpack( black )) 
                 print("Drawing mode on")
             elseif dibujando == "borrado" then
-                linea:setStrokeColor(1, 1, 1) -- Erasing color (white)
+                linea:setStrokeColor(unpack( white )) 
                 print("Erasing mode on")
             end
         elseif event.phase == "moved" then
@@ -87,18 +85,32 @@ end
 
 paint = {
     type = "gradient",
-    color1 = { 1, 0, 0.4 },
-    color2 = { 1, 0, 0, 0.2 },
+    color1 = green,
+    color2 = yellow,
     direction = "right"
 }
 
 function createButton(nx, ny, message, action)
     local button = display.newRoundedRect(nx, ny, 80, 40, 12)
     local text = display.newText(message, button.x, button.y, native.systemFont, 16)
-    text:setFillColor( unpack( white ) )
-    button:addEventListener( "tap", action )
+    text:setFillColor(unpack(white))
+    
+    local function buttonTouch(event)
+        if event.phase == "began" then
+            button.fill = {0.7, 0.7, 0.7}  -- Change the button color when pressed
+        elseif event.phase == "ended" or event.phase == "cancelled" then
+            button.fill = paint  -- Restore the original button color
+            action()  -- Execute the button action
+        end
+        return true
+    end
+    
+    button:addEventListener("touch", buttonTouch)
     button.fill = paint
+    
+    return button
 end
+
 
 local drawingButton  = createButton(60 , 30 , "Draw"    , enableDrawing)
 local erasingButton  = createButton(160, 30 , "Erase"   , enableErasing)
