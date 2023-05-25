@@ -13,6 +13,7 @@ green = { 0  , 1  , 0  }
 blue  = { 0  , 0  , 1  }
 orange = {1 , 144/255, 0}
 yellow = {1, 1, 0}
+purple = {230/255,230/255,250/255}
 
 ---------- Figures sizes ----------
 trSmall  = {0, -30, 30, 30, -30, 30}
@@ -93,7 +94,7 @@ paint = {
 function createButton(nx, ny, message, action)
     local button = display.newRoundedRect(nx, ny, 80, 40, 12)
     local text = display.newText(message, button.x, button.y, native.systemFont, 16)
-    text:setFillColor(unpack(white))
+    text:setFillColor(unpack(grey))
     
     local function buttonTouch(event)
         if event.phase == "began" then
