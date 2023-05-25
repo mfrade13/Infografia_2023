@@ -26,29 +26,34 @@ local figuraActual = nil
 
 local function dibujarOBorrar(event)
     if dibujando then
-        local color = {0, 0, 0} 
-        if event.target == botonBorrado then
-            color = {1, 1, 1} 
-            print( "Erasing mode on" )
-        end
-
         local x = event.x
         local y = event.y
-
+        
         if event.phase == "began" then
             linea = display.newLine(x, y, x, y)
             linea.strokeWidth = 2
-            linea:setStrokeColor(unpack(color))
-            print( "Drawing mode on" )
+            if dibujando == "dibujo" then
+                linea:setStrokeColor(0, 0, 0) -- Drawing color (black)
+                print("Drawing mode on")
+            elseif dibujando == "borrado" then
+                linea:setStrokeColor(1, 1, 1) -- Erasing color (white)
+                print("Erasing mode on")
+            end
         elseif event.phase == "moved" then
             linea:append(x, y)
-            print( "Drawing mode on" )
         end
     end
 end
 
--- Función para insertar figuras
-local function insertarFigura(event)
+function enableDrawing()
+    dibujando = "dibujo"
+end
+
+function enableErasing()
+    dibujando = "borrado"
+end
+
+function insertarFigura(event)
     local x = event.x
     local y = event.y
     
@@ -61,16 +66,6 @@ local function insertarFigura(event)
         cuadrado:setFillColor(unpack(green))
         print( "Square printed" )
     end
-end
-
-function enableDrawing()
-    dibujando    = true
-    figuraActual = nil
-end
-
-function enableErasing()
-    dibujando    = true
-    figuraActual = nil
 end
 
 function triangle()
@@ -104,5 +99,4 @@ local triangleButton = createButton(110, 450, "Triangle", triangle)
 local squareButton   = createButton(210, 450, "Square"  , square)
 
 lienzo:addEventListener("touch", dibujarOBorrar)
--- lienzo:addEventListener("touch", borrar )
 lienzo:addEventListener("tap"  , insertarFigura)
