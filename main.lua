@@ -24,9 +24,14 @@ trLarge  = {0, -70, 70, 70, -70, 70}
 local dibujando = false
 local figuraActual = nil
 
-local function dibujar(event)
-    local color = {0,0,0}
+local function dibujarOBorrar(event)
     if dibujando then
+        local color = {0, 0, 0} 
+        if event.target == botonBorrado then
+            color = {1, 1, 1} 
+            print( "Erasing mode on" )
+        end
+
         local x = event.x
         local y = event.y
 
@@ -40,25 +45,6 @@ local function dibujar(event)
             print( "Drawing mode on" )
         end
     end
-end
-
-local function borrar(event)
-    if dibujando then 
-        local color = {0,0,0}
-        local x = event.x
-        local y = event.y
-
-        if event.phase == "began" then
-            linea = display.newLine(x, y, x, y)
-            linea.strokeWidth = 2
-            linea:setStrokeColor(unpack(color))
-            print( "Erasing mode on" )
-        elseif event.phase == "moved" then
-            linea:append(x, y)
-            print( "Erasing mode on" )
-        end
-    end
-
 end
 
 -- Función para insertar figuras
@@ -117,6 +103,6 @@ local cleaningButton = createButton(260, 30 , "Clean"   , enableNewScreen)
 local triangleButton = createButton(110, 450, "Triangle", triangle)
 local squareButton   = createButton(210, 450, "Square"  , square)
 
-lienzo:addEventListener("touch", dibujar)
-lienzo:addEventListener("touch", borrar )
+lienzo:addEventListener("touch", dibujarOBorrar)
+-- lienzo:addEventListener("touch", borrar )
 lienzo:addEventListener("tap"  , insertarFigura)
