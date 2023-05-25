@@ -84,12 +84,20 @@ function enableNewScreen()
     print( "-----------------------------------------" )
 end
 -------------------- Create Buttons --------------------
+
+paint = {
+    type = "gradient",
+    color1 = { 1, 0, 0.4 },
+    color2 = { 1, 0, 0, 0.2 },
+    direction = "right"
+}
+
 function createButton(nx, ny, message, action)
-    local button = display.newRect(nx, ny, 80, 40)
-    button:setFillColor( unpack( grey ) )
+    local button = display.newRoundedRect(nx, ny, 80, 40, 12)
     local text = display.newText(message, button.x, button.y, native.systemFont, 16)
     text:setFillColor( unpack( white ) )
     button:addEventListener( "tap", action )
+    button.fill = paint
 end
 
 local drawingButton  = createButton(60 , 30 , "Draw"    , enableDrawing)
