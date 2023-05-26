@@ -1,9 +1,8 @@
---64 ancho 80 alto
 
-
+--Creacion de botones manualmente
 
 local borderRadius = 10
--- Crear el botón cuadrado
+
 local boton0 = display.newRoundedRect(20, 445, 60, 60, borderRadius)
 boton0:setFillColor(0.5, 0.5, 0.5)
 boton0.strokeWidth = 1
@@ -338,7 +337,7 @@ local ans = display.newText({
 resultado.anchorX=0
 ans.anchorX=320
 
--- Función para manejar el evento de toque en el botón
+-- Funciones para manejar los eventos de los botones
 local function boton1Presionado(event)
     if event.phase == "ended" then
         resultado.text = resultado.text .. "1"
@@ -533,7 +532,6 @@ local function botonigualPresionado(event)
     end
 end
 
--- Asignar la función de manejo de eventos a los botones
 boton1:addEventListener("touch", boton1Presionado)
 boton2:addEventListener("touch", boton2Presionado)
 boton3:addEventListener("touch", boton3Presionado)
@@ -566,4 +564,209 @@ botontan:addEventListener("touch", botontanPresionado)
 botonmod:addEventListener("touch", botonmodPresionado)
 botonpi:addEventListener("touch", botonpiPresionado)
 
+--switch para clear/darkmode
 
+local widget = require("widget")
+
+local function onSwitchPress(event)
+    local switch = event.target
+    if switch.isOn then
+        display.setDefault("background", 0, 0, 0)  -- Cambiar el color de fondo a rojo
+        boton0:setFillColor(0.5, 0.5, 0.5)
+        boton1:setFillColor(0.5, 0.5, 0.5)
+        boton2:setFillColor(0.5, 0.5, 0.5)
+        boton3:setFillColor(0.5, 0.5, 0.5)
+        boton4:setFillColor(0.5, 0.5, 0.5)
+        boton5:setFillColor(0.5, 0.5, 0.5)
+        boton6:setFillColor(0.5, 0.5, 0.5)
+        boton7:setFillColor(0.5, 0.5, 0.5)
+        boton8:setFillColor(0.5, 0.5, 0.5)
+        boton9:setFillColor(0.5, 0.5, 0.5)
+        botonpunto:setFillColor(0.5, 0.5, 0.5)
+        botonred:setFillColor(0.5, 0.5, 0.5)
+        botonneg:setFillColor(0.5, 0.5, 0.5)
+        botonmas:setFillColor(0.5, 0.5, 0.5)
+        botonmenos:setFillColor(0.5, 0.5, 0.5)
+        botonmult:setFillColor(0.5, 0.5, 0.5)
+        botondiv:setFillColor(0.5, 0.5, 0.5)
+        botonraiz:setFillColor(0.5, 0.5, 0.5)
+        botonalan:setFillColor(0.5, 0.5, 0.5)
+        botonmenos1:setFillColor(0.5, 0.5, 0.5)
+        botoncuadrado:setFillColor(0.5, 0.5, 0.5)
+        botonlog:setFillColor(0.5, 0.5, 0.5)
+        botonpi:setFillColor(0.5, 0.5, 0.5)
+        botonmod:setFillColor(0.5, 0.5, 0.5)
+        botoncos:setFillColor(0.5, 0.5, 0.5)
+        botontan:setFillColor(0.5, 0.5, 0.5)
+        botonsen:setFillColor(0.5, 0.5, 0.5)
+        texto0:setFillColor(255, 255, 255)
+        texto1:setFillColor(255, 255, 255)
+        texto2:setFillColor(255, 255, 255)
+        texto3:setFillColor(255, 255, 255)
+        texto4:setFillColor(255, 255, 255)
+        texto5:setFillColor(255, 255, 255)
+        texto6:setFillColor(255, 255, 255)
+        texto7:setFillColor(255, 255, 255)
+        texto8:setFillColor(255, 255, 255)
+        texto9:setFillColor(255, 255, 255)
+        textopunto:setFillColor(255, 255, 255)
+        textored:setFillColor(255, 255, 255)
+        textoneg:setFillColor(255, 255, 255)
+        textomas:setFillColor(255, 255, 255)
+        textomenos:setFillColor(255, 255, 255)
+        textomult:setFillColor(255, 255, 255)
+        textodiv:setFillColor(255, 255, 255)
+        textoraiz:setFillColor(255, 255, 255)
+        textoalan:setFillColor(255, 255, 255)
+        textomenos1:setFillColor(255, 255, 255)
+        textocuadrado:setFillColor(255, 255, 255)
+        textolog:setFillColor(255, 255, 255)
+        textopi:setFillColor(255, 255, 255)
+        textomod:setFillColor(255, 255, 255)
+        textocos:setFillColor(255, 255, 255)
+        textotan:setFillColor(255, 255, 255)
+        textosen:setFillColor(255, 255, 255)
+        boton0.strokeWidth = 2
+        boton1.strokeWidth = 2
+        boton2.strokeWidth = 2
+        boton3.strokeWidth = 2
+        boton4.strokeWidth = 2
+        boton5.strokeWidth = 2
+        boton6.strokeWidth = 2
+        boton7.strokeWidth = 2
+        boton8.strokeWidth = 2
+        boton9.strokeWidth = 2
+        boton0:setStrokeColor(255, 255, 255)
+        boton1:setStrokeColor(255, 255, 255)
+        boton2:setStrokeColor(255, 255, 255)
+        boton3:setStrokeColor(255, 255, 255)
+        boton4:setStrokeColor(255, 255, 255)
+        boton5:setStrokeColor(255, 255, 255)
+        boton6:setStrokeColor(255, 255, 255)
+        boton7:setStrokeColor(255, 255, 255)
+        boton8:setStrokeColor(255, 255, 255)
+        boton9:setStrokeColor(255, 255, 255)
+        resultado:setFillColor(255, 255, 255)
+        ans:setFillColor(255, 255, 255)
+    else
+        display.setDefault("background", 255, 255, 255)  -- Ejemplo: color gris
+        boton0:setFillColor(255, 255, 255)
+        boton1:setFillColor(255, 255, 255)
+        boton2:setFillColor(255, 255, 255)
+        boton3:setFillColor(255, 255, 255)
+        boton4:setFillColor(255, 255, 255)
+        boton5:setFillColor(255, 255, 255)
+        boton6:setFillColor(255, 255, 255)
+        boton7:setFillColor(255, 255, 255)
+        boton8:setFillColor(255, 255, 255)
+        boton9:setFillColor(255, 255, 255)
+        botonpunto:setFillColor(255, 255, 255)
+        botonred:setFillColor(255, 255, 255)
+        botonneg:setFillColor(255, 255, 255)
+        botonmas:setFillColor(255, 255, 255)
+        botonmenos:setFillColor(255, 255, 255)
+        botonmult:setFillColor(255, 255, 255)
+        botondiv:setFillColor(255, 255, 255)
+        botonraiz:setFillColor(255, 255, 255)
+        botonalan:setFillColor(255, 255, 255)
+        botonmenos1:setFillColor(255, 255, 255)
+        botoncuadrado:setFillColor(255, 255, 255)
+        botonlog:setFillColor(255, 255, 255)
+        botonpi:setFillColor(255, 255, 255)
+        botonmod:setFillColor(255, 255, 255)
+        botoncos:setFillColor(255, 255, 255)
+        botontan:setFillColor(255, 255, 255)
+        botonsen:setFillColor(255, 255, 255)
+        texto0:setFillColor(0, 0, 0)
+        texto1:setFillColor(0, 0, 0)
+        texto2:setFillColor(0, 0, 0)
+        texto3:setFillColor(0, 0, 0)
+        texto4:setFillColor(0, 0, 0)
+        texto5:setFillColor(0, 0, 0)
+        texto6:setFillColor(0, 0, 0)
+        texto7:setFillColor(0, 0, 0)
+        texto8:setFillColor(0, 0, 0)
+        texto9:setFillColor(0, 0, 0)
+        textopunto:setFillColor(0, 0, 0)
+        textored:setFillColor(0, 0, 0)
+        textoneg:setFillColor(0, 0, 0)
+        textomas:setFillColor(0, 0, 0)
+        textomenos:setFillColor(0, 0, 0)
+        textomult:setFillColor(0, 0, 0)
+        textodiv:setFillColor(0, 0, 0)
+        textoraiz:setFillColor(0, 0, 0)
+        textoalan:setFillColor(0, 0, 0)
+        textomenos1:setFillColor(0, 0, 0)
+        textocuadrado:setFillColor(0, 0, 0)
+        textolog:setFillColor(0, 0, 0)
+        textopi:setFillColor(0, 0, 0)
+        textomod:setFillColor(0, 0, 0)
+        textocos:setFillColor(0, 0, 0)
+        textotan:setFillColor(0, 0, 0)
+        textosen:setFillColor(0, 0, 0)
+        boton0.strokeWidth = 2
+        boton1.strokeWidth = 2
+        boton2.strokeWidth = 2
+        boton3.strokeWidth = 2
+        boton4.strokeWidth = 2
+        boton5.strokeWidth = 2
+        boton6.strokeWidth = 2
+        boton7.strokeWidth = 2
+        boton8.strokeWidth = 2
+        boton9.strokeWidth = 2
+        botonpunto.strokeWidth = 2
+        botonred.strokeWidth = 2
+        botonneg.strokeWidth = 2
+        botonmas.strokeWidth = 2
+        botonmenos.strokeWidth = 2
+        botonmult.strokeWidth = 2
+        botondiv.strokeWidth = 2
+        botonraiz.strokeWidth = 2
+        botonalan.strokeWidth = 2
+        botonmenos1.strokeWidth = 2
+        botoncuadrado.strokeWidth = 2
+        botonlog.strokeWidth = 2
+        botonpi.strokeWidth = 2
+        botonmod.strokeWidth = 2
+        botoncos.strokeWidth = 2
+        botontan.strokeWidth = 2
+        botonsen.strokeWidth = 2
+        boton0:setStrokeColor(0, 0, 0)
+        boton1:setStrokeColor(0, 0, 0)
+        boton2:setStrokeColor(0, 0, 0)
+        boton3:setStrokeColor(0, 0, 0)
+        boton4:setStrokeColor(0, 0, 0)
+        boton5:setStrokeColor(0, 0, 0)
+        boton6:setStrokeColor(0, 0, 0)
+        boton7:setStrokeColor(0, 0, 0)
+        boton8:setStrokeColor(0, 0, 0)
+        boton9:setStrokeColor(0, 0, 0)
+        botonpunto:setStrokeColor(0, 0, 0)
+        botonred:setStrokeColor(0, 0, 0)
+        botonneg:setStrokeColor(0, 0, 0)
+        botonmas:setStrokeColor(0, 0, 0)
+        botonmenos:setStrokeColor(0, 0, 0)
+        botonmult:setStrokeColor(0, 0, 0)
+        botondiv:setStrokeColor(0, 0, 0)
+        botonraiz:setStrokeColor(0, 0, 0)
+        botonalan:setStrokeColor(0, 0, 0)
+        botonmenos1:setStrokeColor(0, 0, 0)
+        botoncuadrado:setStrokeColor(0, 0, 0)
+        botonlog:setStrokeColor(0, 0, 0)
+        botonpi:setStrokeColor(0, 0, 0)
+        botonmod:setStrokeColor(0, 0, 0)
+        botoncos:setStrokeColor(0, 0, 0)
+        botontan:setStrokeColor(0, 0, 0)
+        botonsen:setStrokeColor(0, 0, 0)
+        resultado:setFillColor(0, 0, 0)
+        ans:setFillColor(0, 0, 0)
+
+    end
+end
+
+local switch = widget.newSwitch({
+    x = 310,
+    y = 30,
+    style = "onOff",
+    onPress = onSwitchPress
+})
