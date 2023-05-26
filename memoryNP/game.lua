@@ -4,6 +4,7 @@ local sceneName = "game"
 local scene = composer.newScene(sceneName)
 
 local dificultad
+local tiempo
 local numFilas
 local numColumnas
 
@@ -46,8 +47,6 @@ local function onTouchTarjeta(event)
 
                 if tarjetasAbiertas == numFilas * numColumnas then
                     print("¡Has ganado!")
-                    composer.
-                    -- Aquí puedes mostrar una pantalla de victoria o reiniciar el juego
                     composer.gotoScene("resultado")
                 end
             else
@@ -72,7 +71,7 @@ local function onTouchTarjeta(event)
     return true
 end
 
-local function crearTarjetas()
+local function crearTarjetas(sceneGroup)
     local anchoPantalla = display.actualContentWidth
     local altoPantalla = display.actualContentHeight
 
@@ -126,27 +125,46 @@ local function crearTarjetas()
             tarjeta.isOpen = false
 
             tarjeta:addEventListener("touch", onTouchTarjeta)
+            sceneGroup:insert(tarjeta)  -- Agregar la tarjeta al grupo de visualización de la escena
         end
     end
 end
-
 
 function scene:create(event)
     local sceneGroup = self.view
 
     -- Obtén el parámetro "dificultad" de event.params
     dificultad = event.params.dificultad
+    tiempo = event.params.tiempo
     numFilas = dificultad
     numColumnas = dificultad
 
     -- Crea las tarjetas con la dificultad especificada
-    crearTarjetas()
+    crearTarjetas(sceneGroup)
 
     -- Aquí puedes agregar el código para crear y mostrar los elementos visuales de tu juego
+    local function pausaButtonClick(event)
+        if event.phase == "ended" then
+            composer.showOverlay("pausa", {isModal = true, effect = "fade", time = 400})
+        end
+    end
 
+    -- Crear el botón de pausa
+    local pausaButton = display.newRect(sceneGroup, display.contentWidth - 50, 50, 40, 40)
+    pausaButton:setFillColor(0.5, 0.5, 0.5)
+
+    pausaButton:addEventListener("touch", pausaButtonClick)
+
+    local pausaButtonText = display.newText({
+        parent = sceneGroup,
+        text = "| |",
+        x = pausaButton.x,
+        y = pausaButton.y,
+        font = native.systemFont,
+        fontSize = 16
+    })
+    pausaButtonText:setFillColor(1, 1, 1) -- Establecer el color del texto del botón de pausa
 end
-
--- Puedes agregar más funciones y eventos según tus necesidades
 
 scene:addEventListener("create", scene)
 
