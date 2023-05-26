@@ -12,18 +12,36 @@ function scene:create(event)
                                        display.contentCenterY,
                                        display.actualContentWidth,
                                        display.actualContentHeight)
-    background:setFillColor(1, 1, 1) -- Color blanco
+    background.fill = {type = "image", filename = "fondo.png"} -- Establecer la imagen de fondo
 
-    -- Crear texto de victoria
-    local victoryText = display.newText({
+    -- Crear imagen de victoria
+    local victoryImage = display.newImage(sceneGroup, "ganaste.png")
+    victoryImage.x = display.contentCenterX
+    victoryImage.y = display.contentCenterY
+
+    -- Crear botón "Volver a la pantalla principal"
+    local backButton = display.newRect(sceneGroup, display.contentCenterX, display.contentHeight - 50, 200, 50)
+    backButton:setFillColor(0, 181/255, 204/255)
+
+    local backButtonText = display.newText({
         parent = sceneGroup,
-        text = "¡Has ganado!",
-        x = display.contentCenterX,
-        y = display.contentCenterY,
-        font = native.systemFontBold,
-        fontSize = 36
+        text = "Pantalla Principal",
+        x = backButton.x,
+        y = backButton.y,
+        font = native.systemFont,
+        fontSize = 20
     })
-    victoryText:setFillColor(0, 0, 0) -- Color negro
+    backButtonText:setFillColor(1, 1, 1) -- Establecer el color del texto del botón
+
+    -- Función para manejar el evento de clic en el botón "Volver a la pantalla principal"
+    local function backButtonClick(event)
+        if event.phase == "ended" then
+            composer.gotoScene("menu", {effect = "fade", time = 400}) -- Ir a la escena de menu.lua
+            composer.removeScene("game") -- Eliminar la escena de juego actual
+        end
+    end
+
+    backButton:addEventListener("touch", backButtonClick)
 end
 
 -- Mostrar la escena de victoria
