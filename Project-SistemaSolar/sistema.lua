@@ -56,6 +56,10 @@ function scene:create( event )
         line:setStrokeColor(1,1,1,0.2)
     end
 
+    local panel_control = display.newRect(0,3*altura,CW,altura)
+    panel_control.anchorX = 0;panel_control.anchorY = 0
+    panel_control.alpha = 0.2
+
     sol = display.newImageRect(sceneContainer, "Assets/sol.png",426/3,405/3)
     sol.x = 2*ancho; sol.y = 2*altura
 
@@ -82,6 +86,15 @@ function scene:create( event )
 
     neptuno = display.newImageRect(sceneContainer, "Assets/neptuno.png",426/5,405/5)
     neptuno.x = 10*ancho; neptuno.y = 2*altura
+
+    luna_tierra = display.newImageRect(sceneContainer, "Assets/luna_tierra.png",612/21,408/21)
+    luna_tierra.x = 5*ancho; luna_tierra.y = 2.2*altura
+
+    luna1_marte = display.newImageRect(sceneContainer, "Assets/luna1_marte.png",612/24,408/24)
+    luna1_marte.x = 6*ancho; luna1_marte.y = 1.8*altura
+
+    luna2_marte = display.newImageRect(sceneContainer, "Assets/luna2_marte.png",612/24,408/24)
+    luna2_marte.x = 6*ancho; luna2_marte.y = 2.2*altura
 
     -- On/off switch
 	local onOffSwitch = widget.newSwitch {
