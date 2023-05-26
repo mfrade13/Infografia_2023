@@ -66,9 +66,11 @@ local function onCellClick(event)
     
 end
 
+
+
 function scene:create(event)
-    
     local sceneGroup = self.view
+
     for i = 1, tableWidth * tableHeight do
         local row = math.floor((i - 1) / tableWidth)
         local column = (i - 1) % tableWidth
@@ -132,6 +134,7 @@ function scene:show( event )
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         print("Dentro del did de la funcion show")
+        --composer.removeScene("atom")
         
     end
 end

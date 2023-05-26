@@ -6,15 +6,16 @@ local scene = composer.newScene()
 local physics = require("physics")
 physics.start()
 
-function scene:create(event)
 
+function scene:create(event)
     local sceneGroup = self.view
+
     for k, v in pairs (event.params) do
         print (k, v)
     end
     -- Obtener los parámetros
     local params = event.params.elemento
-    --local element = param.element
+    --element = param.element
     
     local name = params.name
     local protons = params.atomicNumber
@@ -124,7 +125,11 @@ function scene:create(event)
     backButton:setFillColor(1, 1, 1)
 
     local function goBack()
-        composer.gotoScene("table", { effect = "crossFade", time = 500 })
+        local options = {
+            effect = "zoomInOut",
+            time = 500,
+        }
+        composer.gotoScene("tabla", options)
     end
 
     backButton:addEventListener("tap", goBack)
@@ -142,6 +147,7 @@ function scene:show( event )
         print("Dentro del will de la funcion show")
 
     elseif ( phase == "did" ) then
+        composer.removeScene("tabla")
         -- Code here runs when the scene is entirely on screen
         print("Dentro del did de la funcion show")
         
