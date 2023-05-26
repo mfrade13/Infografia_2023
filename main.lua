@@ -1,6 +1,6 @@
--- Background
+---------- Background ----------
 local screenHeight = display.actualContentHeight
-local lienzoHeight = screenHeight * 0.75 -- 3/4 of the screen height
+local lienzoHeight = screenHeight * 0.75
 local lienzo = display.newRect(display.contentCenterX, display.contentCenterY, display.actualContentWidth, lienzoHeight)
 lienzo:setFillColor(1) 
 
@@ -99,39 +99,49 @@ paint = {
     direction = "right"
 }
 
-function createButton(nx, ny, h, w, message, action, figureSize)
+function createButton(nx, ny, h, w, message, action, figureSize, imagePath)
+    local buttonGroup = display.newGroup()
+
     local button = display.newRoundedRect(nx, ny, h, w, 12)
-    local text = display.newText(message, button.x, button.y, native.systemFont, 16)
-    text:setFillColor(unpack(grey))
-    
+    -- local text = display.newText(buttonGroup, message, button.x, button.y, native.systemFont, 16)
+    -- text:setFillColor(unpack(grey))
+
+    local image = display.newImageRect(buttonGroup, imagePath, 150, 150)
+    local imageAspect = image.width / image.height
+    local imageSize = math.min(h, w)
+    image.width = imageSize
+    image.height = imageSize / imageAspect
+    image.x = button.x
+    image.y = button.y
+    image:toFront()
+
     local function buttonTouch(event)
         if event.phase == "began" then
-            button.fill = {0.7, 0.7, 0.7}  -- Change the button color when pressed
+            button.fill = {0.7, 0.7, 0.7}
         elseif event.phase == "ended" or event.phase == "cancelled" then
-            button.fill = paint  -- Restore the original button color
-            action(figureSize)  -- Execute the button action
+            button.fill = paint
+            action(figureSize)
         end
         return true
     end
-    
+
     button:addEventListener("touch", buttonTouch)
     button.fill = paint
-    
-    return button
+
+    return buttonGroup
 end
 
-
-local drawingButton  = createButton(60 , 30 , 80, 40, "Draw"    , enableDrawing)
-local erasingButton  = createButton(160, 30 , 80, 40, "Erase"   , enableErasing)
-local cleaningButton = createButton(260, 30 , 80, 40, "Clean"   , enableNewScreen)
-local triangleButton = createButton(110, 450, 80, 40, "Triangle", triangle, trMedium)
-local sButton        = createButton(3  , 450, 20, 30, "1"       , triangle, trSmall)
-local mButton        = createButton(28 , 450, 20, 30, "2"       , triangle, trMedium)
-local lButton        = createButton(53 , 450, 20, 30, "3"       , triangle, trLarge)
-local squareButton   = createButton(210, 450, 80, 40, "Square"  , square, sqMedium)
-local sButton        = createButton(270, 450, 20, 30, "1"       , square, sqSmall)
-local mButton        = createButton(295, 450, 20, 30, "2"       , square, sqMedium)
-local lButton        = createButton(320, 450, 20, 30, "3"       , square, sqLarge)
+local drawingButton = createButton(60, 30, 80, 40, "Draw", enableDrawing, nil,"Impencil.png")
+local erasingButton = createButton(160, 30, 80, 40, "Erase", enableErasing, nil, "Imeraser.png")
+local cleaningButton = createButton(260, 30, 80, 40, "Clean", enableNewScreen, nil, "Imclean.png")
+local triangleButton = createButton(110, 450, 80, 40, "Triangle", triangle, trMedium, "Imtriangle.png")
+-- local sButton        = createButton(3  , 450, 20, 30, "1"       , triangle, trSmall, nil)
+-- local mButton        = createButton(28 , 450, 20, 30, "2"       , triangle, trMedium, nil)
+-- local lButton        = createButton(53 , 450, 20, 30, "3"       , triangle, trLarge, nil)
+local squareButton   = createButton(210, 450, 80, 40, "Square"  , square, sqMedium, "Imsquare.png")
+-- local sButton        = createButton(270, 450, 20, 30, "1"       , square, sqSmall, nil)
+-- local mButton        = createButton(295, 450, 20, 30, "2"       , square, sqMedium, nil)
+-- local lButton        = createButton(320, 450, 20, 30, "3"       , square, sqLarge, nil)
 
 lienzo:addEventListener("touch", dibujarOBorrar)
 lienzo:addEventListener("tap"  , insertarFigura)
