@@ -103,6 +103,25 @@ function scene:create( event )
 	}
 	onOffSwitch.y = altura*3.6; onOffSwitch.x = ancho 
 	sceneGroup:insert( onOffSwitch )
+
+    -- Radio button set
+	local radioGroup = display.newGroup()
+	local radioButton = widget.newSwitch {
+		left = 20,
+		style = "radio",
+		initialSwitchState = true
+	}
+	radioGroup:insert( radioButton )
+	radioButton.y = altura*3.6; radioButton.x = ancho*2
+
+	local radioButton2 = widget.newSwitch {
+		style = "radio"
+	}
+	radioGroup:insert( radioButton2 )
+	radioButton2.x = radioButton.x+2*radioButton.width
+	radioButton2.y = altura*3.6
+	sceneGroup:insert( radioGroup )
+
 end
  
  
@@ -157,7 +176,7 @@ local function move( event )
     local radio_S2Mercurio = ancho
     local W_mercurio = 2*(math.pi)/periodo_mercurio
 
-    local angulo = 0.2 * tDelta
+    local angulo = 0.15 * tDelta
     local x_prima = mercurio.x - sol.x
     local y_prima = mercurio.y - sol.y
     mercurio.x = math.cos(math.rad(angulo))*mercurio.x - math.sin(math.rad(angulo))*mercurio.y
