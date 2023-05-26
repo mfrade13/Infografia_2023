@@ -102,7 +102,7 @@ paint = {
 function createButton(nx, ny, h, w, message, action, figureSize, imagePath)
     local buttonGroup = display.newGroup()
 
-    local button = display.newRoundedRect(nx, ny, h, w, 12)
+    local button = display.newRoundedRect(buttonGroup, nx, ny, h, w, 12)
     -- local text = display.newText(buttonGroup, message, button.x, button.y, native.systemFont, 16)
     -- text:setFillColor(unpack(grey))
 
