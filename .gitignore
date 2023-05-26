@@ -1,3 +1,9 @@
+/AndroidResources
+/Images.xcassets
+/LaunchScreen.storyboardc
+imgui.ini
+marco1.xcf
+
 # Compiled Lua sources
 luac.out
 
