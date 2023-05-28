@@ -27,10 +27,7 @@ local function onTextChanged(event)
     end
 end
 
-local function onResultObtained(event)
 
-    
-end
 
 -- Crear el cuadro de texto
 local textBoxHeight = 50
@@ -45,15 +42,14 @@ textBox.size = 35 -- Tamaño de fuente en puntos
 local textResult = native.newTextField(display.contentCenterX, textBoxHeight * 2, display.contentWidth, textBoxHeight)
 textResult.isEditable = false -- No Permitir edición del texto 
 textResult.align = "right" -- Alinear el texto en la parte derecha
-textResult:addEventListener("Result", onResultObtained)
 
 --Botones
 local Botones = {
-    {'sinx', '%', 'log10', 'C', '<x', '<--'},
-    {'cosx', 'x^y', 'x^2', 'raiz2', '/', '-->'},
-    {'tanx', '7', '8', '9', '*', '('},
-    {'logn', '4', '5', '6', '-', ')'},
-    {'mod', '1', '2', '3', '+'},
+    {'sinx', '%', 'log10', 'ln', 'C'},
+    {'cosx', 'x^y', 'x^2', 'raiz2', '/'},
+    {'tanx', '7', '8', '9', '*'},
+    {'logn', '4', '5', '6', '-'},
+    {'mod', '1', '2', '3', '+',},
     {'red', '+/-', '0', '.', '='}
 }
 
@@ -64,7 +60,7 @@ local function evaluarOperacion(num1, num2, operacion)
         return num1 + num2
     elseif operacion == "-" then
         return num1 - num2
-    elseif operacion == "*" then
+    elseif operacion == "*" or operacion == "+/-" then
         return num1 * num2
     elseif operacion == "/" then
         return num1 / num2
@@ -75,15 +71,105 @@ local function evaluarOperacion(num1, num2, operacion)
     elseif operacion == "mod" then
         return num1 % num2
     elseif operacion == "log" then
-        return math.log(num1, num2)
-    elseif operacion == "log10" then
-        return math.log(num1, num2)
-    elseif operacion == "+/-" then
-        return num1 * num2
+        return math.log(num1) / math.log(num2)--Resulta que math.log era logaritmo natural...
+    elseif operacion == "ln" then
+        return math.log(num1)
+    elseif operacion == "sin" then
+        return math.sin(num1)
+    elseif operacion == "cos" then
+        return math.cos(num1)
+    elseif operacion == "tan" then
+        return math.tan(num1)
+    elseif operacion == "%" then
+        return num1 * (num2 / 100)
+    elseif operacion == "red" then
+        return math.round(num1)
     end
 end
+
 -- Función recursiva para evaluar la expresión matemática
 local function evaluarExpresion(numeros, operaciones)
+    --Realizar todas las potencias y raices primero
+    local indexPotencia = nil
+    local indexRaiz = nil
+
+    for i, operacion in ipairs(operaciones) do
+        if operacion == "^" then
+            indexPotencia = i
+            break
+        elseif operacion == "R2" then
+            indexRaiz = i
+            break 
+        end
+    end
+
+    if indexPotencia or indexRaiz then
+        local index = indexPotencia or indexRaiz
+        local num1 = numeros[index]
+        local num2 = numeros[index + 1]
+        local operacion = operaciones[index]
+
+        local resultado = evaluarOperacion(num1, num2, operacion)
+
+        -- Remover los números y operaciones utilizados para la potencia o raiz
+        table.remove(numeros, index)
+        table.remove(numeros, index)
+        table.remove(operaciones, index)
+
+        -- Insertar el resultado de la potencia o raiz en la lista de números
+        table.insert(numeros, index, resultado)
+
+        -- Llamar recursivamente a la función con las nuevas listas
+        return evaluarExpresion(numeros, operaciones)
+    end
+
+    --Realizar todas las operaciones trigonometricas y logaritmos primero
+    local indexlog = nil
+    local indexln = nil
+    local indexsin = nil
+    local indexcos = nil
+    local indextan = nil
+
+    for i, operacion in ipairs(operaciones) do
+        if operacion == "log" then
+            indexlog = i
+            break
+        elseif operacion == "ln" then
+            indexln = i
+            break
+        elseif operacion == "sin" then
+            indexsin = i
+            break
+        elseif operacion == "cos" then
+            indexcos = i
+            break
+        elseif operacion == "tan" then
+            indextan = i
+            break
+        end
+    end
+
+    if indexlog or indexsin or indexcos or indextan or indexln then
+        local index = indexlog or indexsin or indexcos or indextan or indexln
+        local num1 = numeros[index]
+        local num2 = numeros[index + 1]
+        local operacion = operaciones[index]
+
+        local resultado = evaluarOperacion(num1, num2, operacion)
+
+        -- Remover los números y operaciones utilizados para las operaciones trigonometricas y logaritmos
+        table.remove(numeros, index)
+        table.remove(numeros, index)
+        table.remove(operaciones, index)
+
+        -- Insertar el resultado de operaciones trigonometricas y logaritmos en la lista de números
+        table.insert(numeros, index, resultado)
+
+        -- Llamar recursivamente a la función con las nuevas listas
+        return evaluarExpresion(numeros, operaciones)
+    end
+
+
     -- Realizar todas las multiplicaciones y divisiones primero
     local indexMultiplicacion = nil
     local indexDivision = nil
@@ -93,12 +179,6 @@ local function evaluarExpresion(numeros, operaciones)
             indexMultiplicacion = i
             break
         elseif operacion == "/" then
-            indexDivision = i
-            break
-        elseif operacion == "^" then
-            indexDivision = i
-            break
-        elseif operacion == "R2" then
             indexDivision = i
             break
         end
@@ -270,8 +350,23 @@ local function handleButtonEvent(event)
         table.insert(nums, tonumber(textBox.text))
         textBox.text = ""
         --op = 10
-        table.insert(ops, "log10")
+        table.insert(ops, "log")
         table.insert(nums, 10)
+    elseif buttonValue == "logn" then
+        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
+        textResult.text = textResult.text .. "log"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 10
+        table.insert(ops, "log")
+    elseif buttonValue == "ln" then
+        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
+        textResult.text = textResult.text .. "ln"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 10
+        table.insert(ops, "ln")
+        table.insert(nums, 1)
     elseif buttonValue == "+/-" then
         textResult.text = textResult.text .. "(-1)"
         table.insert(nums, tonumber(textBox.text))
@@ -279,57 +374,50 @@ local function handleButtonEvent(event)
         --op = 5
         table.insert(ops, "+/-")
         table.insert(nums, -1)
-    
-    
-    
+    elseif buttonValue == "sinx" then
+        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
+        textResult.text = textResult.text .. "sin"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 11
+        table.insert(ops, "sin")
+        table.insert(nums, 1)
+    elseif buttonValue == "cosx" then
+        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
+        textResult.text = textResult.text .. "cos"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 12
+        table.insert(ops, "cos")
+        table.insert(nums, 1)
+    elseif buttonValue == "tanx" then
+        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
+        textResult.text = textResult.text .. "tan"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 13
+        table.insert(ops, "tan")
+        table.insert(nums, 1)
     elseif buttonValue == "%" then
         -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
         textResult.text = textResult.text .. "%"
         table.insert(nums, tonumber(textBox.text))
         textBox.text = ""
-        op = 5
-        table.insert(ops, op)
-    
-    
-    
-    
-    --elseif buttonValue == "sinx" then
+        --op = 5
+        table.insert(ops, "%")
+    elseif buttonValue == "red" then
         -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
-      --  textResult.text = textResult.text .. "sin()"
-     --   table.insert(nums, tonumber(textBox.text))
-      --  textBox.text = ""
-     --   op = 11
-     --   table.insert(ops, op)
-    --elseif buttonValue == "cosx" then
-        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
-    --    textResult.text = textResult.text .. "cos()"
-    --    table.insert(nums, tonumber(textBox.text))
-    --    textBox.text = ""
-     --   op = 12
-    --    table.insert(ops, op)
-    --elseif buttonValue == "tanx" then
-        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
-     --   textResult.text = textResult.text .. "tan()"
-   --     table.insert(nums, tonumber(textBox.text))
-    --    textBox.text = ""
-    --    op = 13
-    --    table.insert(ops, op)
-    
-    --elseif buttonValue == "red" then
-        -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
-     --   textResult.text = textResult.text .. "red()"
-    --    table.insert(nums, tonumber(textBox.text))
-     --   textBox.text = ""
-     --   op = 15
-     --   table.insert(ops, op)
-    
-    
-    
-    
-    
+        textResult.text = textResult.text .. "red"
+        table.insert(nums, tonumber(textBox.text))
+        textBox.text = ""
+        --op = 15
+        table.insert(ops, "red")
+        table.insert(nums, 1)
     elseif buttonValue == "C" then
         textResult.text = ""
         textBox.text = ""
+        nums = {}
+        ops = {}
     elseif buttonValue == "=" then
         -- Realizar el cálculo de la expresión matemática ingresada y mostrar el resultado
         --textResult.text = textResult.text .. ""
@@ -344,8 +432,8 @@ local function handleButtonEvent(event)
         end
         resultado = evaluarExpresion(nums, ops)
         textResult.text = tostring(resultado)
-    elseif buttonValue == "C" then
-        -- Borrar el contenido del cuadro de texto
+        nums = {}
+        ops = {}
     end
 end
 
@@ -357,7 +445,7 @@ local function onTouch(event)
 end
 
 -- Crear los botones
-local buttonWidth = 30
+local buttonWidth = 40
 local buttonHeight = 40
 local buttonMargin = 20
 local startX = display.contentCenterX - (buttonWidth * 2 + buttonMargin) -- Alinear los botones al centro horizontal
@@ -369,7 +457,7 @@ for i = 1, #Botones do
         local buttonLabel = row[j]
         
         local button = widget.newButton({
-            x = (startX + (j - 1) * (buttonWidth + buttonMargin)) - (buttonWidth + buttonWidth / 2.5),
+            x = (startX + (j - 1) * (buttonWidth + buttonMargin)) - buttonWidth / 2.5,
             y = startY + (i - 1) * (buttonHeight + buttonMargin),
             width = buttonWidth,
             height = buttonHeight,
