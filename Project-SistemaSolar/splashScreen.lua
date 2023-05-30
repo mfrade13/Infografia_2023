@@ -10,17 +10,15 @@ function irSistema()
     composer.gotoScene("sistema", "zoomInOutFade")
 end
 
- function moveBigBang(e)
+function moveBigBang(e)
     if e.phase == "ended" then
         transition.to(fondo, { xScale=2.5, yScale=2.5, y = -CH/2, x = -CW/2, onComplete=irSistema})
     end
 end
 
--- create()
 function scene:create( event )
  
     local sceneGroup = self.view
-    
     fondo_bienvenida = {
         type = "image",
         filename = "Assets/space2.jpg"
@@ -29,12 +27,10 @@ function scene:create( event )
     fondo.x, fondo.y = 0,0
     fondo.anchorX = 0; fondo.anchorY = 0
     fondo.fill = fondo_bienvenida
-
     fondo:addEventListener("touch", moveBigBang)
 end
  
  
--- show()
 function scene:show( event )
  
     local sceneGroup = self.view
@@ -50,27 +46,22 @@ function scene:show( event )
 end
  
  
--- hide()
 function scene:hide( event )
  
     local sceneGroup = self.view
     local phase = event.phase
  
     if ( phase == "will" ) then
-        -- Code here runs when the scene is on screen (but is about to go off screen)
  
     elseif ( phase == "did" ) then
-        -- Code here runs immediately after the scene goes entirely off screen
  
     end
 end
  
  
--- destroy()
 function scene:destroy( event )
  
     local sceneGroup = self.view
-    -- Code here runs prior to the removal of scene's view
  
 end
  
