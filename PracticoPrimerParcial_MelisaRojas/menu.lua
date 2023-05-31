@@ -13,21 +13,6 @@ local fondo
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 --
-
-
-
-
-
---local tablaFondos = {1,5,8,9}
-
---local options = {
-  --  effect = "slideUp",
-    --time = 500,
-    --params = {
-      --  nivel = 2,
-        --fondo =  tablaFondos[math.random(1,4)]
-    --}
---}
 --
 function irMeteoros(event)
     if event.phase == "ended" then
@@ -101,62 +86,6 @@ end
 
 --------------------------------
 
---function botonesMenu()
---utilizar como la funcion de arriba irGasolina
---colocar este en global
---[[
-    local optMeteoros = display.newRoundedRect(CW/2-48, CH/2+50, 81, 33, 4 )
-    optMeteoros:setFillColor( 0,0,0 )
-    local textoMeteoros = display.newText( "METEORITOS", optMeteoros.x, optMeteoros.y , "Comic Sans MS", 10 )
-
-    local optCables = display.newRoundedRect(CW/2-46, CH/2+92, 81, 20, 4 )
-    optCables:setFillColor( 0,0,0 )
-    local textoCables = display.newText( "CABLES", optCables.x, optCables.y , "Comic Sans MS", 10 )
-
-    local optEscaner = display.newRoundedRect(CW/2+46, CH/2+50, 81, 33, 4 )
-    optEscaner:setFillColor( 0,0,0 )
-    local textoEscaner = display.newText( "ESCANER", optEscaner.x, optEscaner.y , "Comic Sans MS", 10 )
-
-    local optGasolina = display.newRoundedRect(CW/2+46, CH/2+92, 81, 20, 4 )
-    optGasolina:setFillColor( 0,0,0 )
-    local textoGasolina = display.newText( "GASOLINA", optGasolina.x, optGasolina.y , "Comic Sans MS", 10 )
-
---end
---utilizar como la funcion de arriba irGasolina
-
-function optMeteoros:touch(e)
-  if e.phase == "ended" then
-    self.isVisible = false
-
-  end
-  return true
-end
-
-function optCables:touch(e)
-  if e.phase == "ended" then
-    self.isVisible = false
-
-  end
-  return true
-end
-
-function optEscaner:touch(e)
-  if e.phase == "ended" then
-    self.isVisible = false
-
-  end
-  return true
-end
-
-function optGasolina:touch(e)
-  if e.phase == "ended" then
-    self.isVisible = false
-
-  end
-  return true
-end
-]]
-
 -- create()
 function scene:create( event )
     
@@ -191,17 +120,6 @@ function scene:create( event )
     textoGasolina.isVisible = false
     -----------------------------------------
 
-
-    --botonesMenu()
-    --[[
-    local optMeteoros = display.newRoundedRect(CW/2-48, CH/2+50, 81, 33, 4 )
-    optMeteoros:setFillColor( 0,0,0 )
-    local textoMeteoros = display.newText( "METEORITOS", optMeteoros.x, optMeteoros.y , "Comic Sans MS", 10 )
-]]
-
-    --copa = display.newImageRect(sceneGroup, rutaAssets.."Oro.png", 100, 100)
-    --copa.x, copa.y = math.random(0, CW), math.random(0,CH)
-
 end
  
 -- show()
@@ -214,9 +132,6 @@ function scene:show( event )
         -- Code here runs when the scene is still off screen (but is about to come on screen)
 
         print("Dentro del will de la funcion show")
-
-        
-
 
         optMeteoros:addEventListener("touch", eventMeteoro)
         optCables:addEventListener("touch", eventCables)
@@ -234,76 +149,15 @@ function scene:show( event )
 
         optGasolina.isVisible = true
         textoGasolina.isVisible = true
-        
-
-
-        --botonesMenu()
-
-                --function botonesMenu()
---[[
-            local optMeteoros = display.newRoundedRect(CW/2-48, CH/2+50, 81, 33, 4 )
-            optMeteoros:setFillColor( 0,0,0 )
-            local textoMeteoros = display.newText( "METEORITOS", optMeteoros.x, optMeteoros.y , "Comic Sans MS", 10 )
-
-            local optCables = display.newRoundedRect(CW/2-46, CH/2+92, 81, 20, 4 )
-            optCables:setFillColor( 0,0,0 )
-            local textoCables = display.newText( "CABLES", optCables.x, optCables.y , "Comic Sans MS", 10 )
-
-            local optEscaner = display.newRoundedRect(CW/2+46, CH/2+50, 81, 33, 4 )
-            optEscaner:setFillColor( 0,0,0 )
-            local textoEscaner = display.newText( "ESCANER", optEscaner.x, optEscaner.y , "Comic Sans MS", 10 )
-
-            local optGasolina = display.newRoundedRect(CW/2+46, CH/2+92, 81, 20, 4 )
-            optGasolina:setFillColor( 0,0,0 )
-            local textoGasolina = display.newText( "GASOLINA", optGasolina.x, optGasolina.y , "Comic Sans MS", 10 )
-
-        --end
-
-        function optMeteoros:touch(e)
-          if e.phase == "ended" then
-            self.isVisible = false
-
-          end
-          return true
-        end
-
-        function optCables:touch(e)
-          if e.phase == "ended" then
-            self.isVisible = false
-
-          end
-          return true
-        end
-
-        function optEscaner:touch(e)
-          if e.phase == "ended" then
-            self.isVisible = false
-
-          end
-          return true
-        end
-
-        function optGasolina:touch(e)
-          if e.phase == "ended" then
-            self.isVisible = false
-
-          end
-          return true
-        end
-]]
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         print("Dentro del did de la funcion show")
-        --botonPlay:addEventListener("touch")
 
         optMeteoros:addEventListener("touch", irMeteoros)
         optCables:addEventListener("touch", irCables)
         optEscaner:addEventListener("touch", irEScaner)
         optGasolina:addEventListener("touch", irGasolina)
-
-
-        --fondo:addEventListener("touch", irJuego)
     end
 end
  
@@ -316,7 +170,6 @@ function scene:hide( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is on screen (but is about to go off screen)
-        --fondo:removeEventListener("touch", fondo)
         optMeteoros:removeEventListener("touch", eventMeteoro)
         optCables:removeEventListener("touch", eventCables)
         optEscaner:removeEventListener("touch", eventEscaner)

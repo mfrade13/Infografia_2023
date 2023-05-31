@@ -24,17 +24,20 @@ function tocar_botonMenu(event)
   return true
 end
 
+function mov_escaner(event)
+    if event.phase == "ended" then
+        transition.to(escaner, {time = 1000, y=150})--, weight = 40} )
+    end
+    return true
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
 -- create()
 function scene:create( event )
- 
-    --for k,v in pairs(event.params) do
-      --  print(k,v)
-    --end
-    --indice_del_fondo = event.params.fondo
+
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     fondo = display.newImageRect(sceneGroup, rutaAssets.. "escaner.jpg",CW, CH )
@@ -61,6 +64,11 @@ function scene:create( event )
     -- local icono = display.newImageRect(sceneGroup, "Icon.png",CW/2, CH/2 )
     -- icono.x = CW/2; icono.y =CH/2
     --fondo:addEventListener("touch", irMenu)
+    
+    escaner = display.newCircle( CW/2, CH/2+10, 13 )
+    escaner:setFillColor(0,0,1,0.7 )
+    escaner.isVisible = false
+
 end
  
 -- show()
@@ -76,11 +84,14 @@ function scene:show( event )
         botonMenu:addEventListener("touch", tocar_botonMenu)
         botonMenu.isVisible = true
         textoMenu.isVisible = true
+        protector.isVisible = true
+        escaner.isVisible = true
 
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         botonMenu:addEventListener("touch", irMenu)
+        escaner:addEventListener( "touch", mov_escaner )
 
     end
 end
@@ -98,6 +109,9 @@ function scene:hide( event )
         botonMenu:removeEventListener("touch", tocar_botonMenu)
         botonMenu.isVisible=false
         textoMenu.isVisible=false
+        protector.isVisible = false
+        escaner:removeEventListener( "touch", mov_escaner )
+        escaner.isVisible = false
         
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen

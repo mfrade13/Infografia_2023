@@ -27,10 +27,11 @@ function tocar_botonMenu(event)
   return true
 end
 
+--y=160
 
 function tocar_botonGasolina(event)
     if event.phase == "ended" then
-        transition.to(llenarGasolina, {time = 10500, y=160, height = 140} )
+        transition.to(llenarGasolina, {time = 10500, height = 140} )
     end
     return true
 end
@@ -41,11 +42,7 @@ end
 
 -- create()
 function scene:create( event )
- 
-    --for k,v in pairs(event.params) do
-      --  print(k,v)
-    --end
-    --indice_del_fondo = event.params.fondo
+
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     fondo = display.newImageRect(sceneGroup, rutaAssets.. "gasolina.jpg",CW, CH )
@@ -63,6 +60,7 @@ function scene:create( event )
     botonGasolina.isVisible = false
 
     llenarGasolina = display.newRoundedRect( CW/2, CH/2+50, 90, 34, 10 )
+    llenarGasolina.anchorY = 1
     llenarGasolina:setFillColor(1,0,0,0.3 )
     llenarGasolina.isVisible=false
     -----------------------------
@@ -109,17 +107,13 @@ function scene:hide( event )
         botonMenu.isVisible=false
         textoMenu.isVisible=false
 
-
-
         botonGasolina.isVisible = false
         llenarGasolina.isVisible=false
 
 
         
     elseif ( phase == "did" ) then
-        -- Code here runs immediately after the scene goes entirely off screen
-
- 
+        -- Code here runs immediately after the scene goes entirely off screen 
     end
 end
  

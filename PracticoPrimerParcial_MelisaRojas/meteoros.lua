@@ -15,7 +15,7 @@ function irMenu(event)
     return true
 end
 
-
+--[[
 local obstaculos = {}
 
 --para hacer aparecer los obstaculos
@@ -37,11 +37,28 @@ function tocar_obstaculos(event)
     end
 
 end
+]]
+
+-------------------------------------
+local meteoritosAll = {}
+--local transitions = {}
 
 
--- -----------------------------------------------------------------------------------
--- Scene event functions
--- -----------------------------------------------------------------------------------
+function onTouch(event)
+    if event.phase == "ended" then
+        display.remove( event.target )
+        for i = #meteoritosAll, 1, -1 do
+            if meteoritosAll[i] == event.target then
+                table.remove( meteoritosAll, i)
+                break
+            end
+        end
+    end
+    return true
+end
+
+local numMeteoros = 10
+--------------------------------------
 
 function tocar_botonMenu(event)
   if event.phase == "ended" then
@@ -50,6 +67,11 @@ function tocar_botonMenu(event)
   end
   return true
 end
+
+-- -----------------------------------------------------------------------------------
+-- Scene event functions
+-- -----------------------------------------------------------------------------------
+
 
 -- create()
 function scene:create( event )
@@ -64,7 +86,8 @@ function scene:create( event )
     textoMenu = display.newText( "MENU", botonMenu.x, botonMenu.y , "Comic Sans MS", 10 )
     botonMenu.isVisible = false
     textoMenu.isVisible = false
-
+    
+    --[[
     for i=30,1,-1 do
             obstaculos[i] = display.newImageRect(rutaAssets.. "meteoro1.png", 72/3, 50/3 )
             obstaculos[i].x, obstaculos[i].y = math.random(10, CW), math.random(30, CH)
@@ -72,6 +95,39 @@ function scene:create( event )
             transition.to(obstaculos[i], {time = 10500, x = 0})
             
     end
+    ]]
+
+    ---------------------------------------------------------------------
+        --creacion de los meteoritos
+        for i=1, numMeteoros do
+            local meteoritos = display.newImageRect(rutaAssets.. "meteoro1.png", 72/3, 50/3 )
+            meteoritos.x, meteoritos.y = math.random(CW), math.random(CH)
+            meteoritos:addEventListener("touch", onTouch)
+
+                    --asignacion de una trnasicion de movimiento aleatorios
+
+            --meteoritos.isMoving = true
+
+            table.insert( meteoritosAll, meteoritos ) --agregamos el meteoro a la tabla
+
+            transition.to(meteoritos, 
+                {
+                    time= 10000, 
+                    x = math.random(CW), 
+                    y = math.random(CH), 
+                    onComplete = function()
+                        display.remove(meteoritos)
+                        for i = #meteoritosAll, 1, -1 do
+                            if meteoritosAll[i] == meteoritos then
+                                table.remove( meteoritosAll, i)
+                                break
+                            end
+                        end
+                    end
+                }
+            )
+        end
+    --------------------------------------------------------------------------- 
 
 end
  
@@ -89,17 +145,18 @@ function scene:show( event )
         botonMenu.isVisible = true
         textoMenu.isVisible = true
 
-
+        --[[
         for i=#obstaculos,1,-1 do
             --obstaculos[i]:addEventListener("touch", eventoObstaculos)
             --obstaculos[i].isVisible = true
         end
-
+        ]]
 
     elseif ( phase == "did" ) then
         -- Code here runs when the scene is entirely on screen
         botonMenu:addEventListener("touch", irMenu)
-
+        
+        --[[
         for i=#obstaculos,1,-1 do
             
             obstaculos[i]:addEventListener("touch", eventoObstaculos)
@@ -113,6 +170,8 @@ function scene:show( event )
             obstaculos[i].isVisible = true
             
         end
+        ]]
+
 
     end
 end
@@ -129,15 +188,24 @@ function scene:hide( event )
         botonMenu:removeEventListener("touch", tocar_botonMenu)
         botonMenu.isVisible=false
         textoMenu.isVisible=false
-
+        
+        --[[
         for i=#obstaculos,1,-1 do
             --obstaculos[i]:removeEventListener( "touch", tocar_obstaculos )
             --obstaculos[i]:removeEventListener("touch", eventoObstaculos)
             obstaculos[i].isVisible = false
         end
-        
+        ]]    
+
+        for i=#meteoritosAll, 1, -1 do
+            meteoritosAll[i]:removeEventListener("touch", onTouch)
+            meteoritosAll[i].isVisible = false
+        end
+
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
+        
+        --[[
         for i=30,1,-1 do
             --obstaculos[i]:removeEventListener( "touch", tocar_obstaculos )
             --obstaculos[i]:removeEventListener("touch", eventoObstaculos)
@@ -146,7 +214,7 @@ function scene:hide( event )
         --botonMenu:removeEventListener("touch", irMenu)
         --botonMenu.isVisible=false
         --textoMenu.isVisible=false
-
+        ]]
  
     end
 end

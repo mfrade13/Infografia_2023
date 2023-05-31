@@ -25,104 +25,6 @@ function tocar_botonMenu(event)
   return true
 end
 
---local cableRosado
---local cableRojo
---[[
-function tocar_cableRosado(event)
-
-    if event.phase == "began" then
-        cableRosado = display.newLine( CW/2-100, CH/2-80, CW/2-80, CH/2-80 )
-        cableRosado:setStrokeColor( 1, 0, 1 )
-        cableRosado.strokeWidth = 5
-
-        cableRosado.isVisible = true
-    elseif event.phase == "moved" then
-        if event.x == CW/2-100 and event.y == CH/2-80 then
-            cableRosado:append( event.x, event.y)        
-        end
-    end
-    return true
-end
-
-
-function tocar_cableRojo(event)
-
-    if event.phase == "began" then
-        cableRojo = display.newLine( CW/2-100, CH/2-40, CW/2-80, CH/2-80 )
-        cableRojo:setStrokeColor( 1, 0, 0 )
-        cableRojo.strokeWidth = 5
-
-        cableRojo.isVisible = true
-    elseif event.phase == "moved" then
-        if event.x == CW/2-100 and event.y == CH/2-40 then
-            cableRojo:append( event.x, event.y)
-        end      
-    end
-    return true
-end
-
-]]
-
---[[
-cableRosado = display.newLine( CW/2-100, CH/2-80, CW/2-80, CH/2-80 )
-cableRosado:append( CW/2,CH/2, CW, CH, 0,0 )
-cableRosado:setStrokeColor( 1, 0, 1 )
-cableRosado.strokeWidth = 5
-cableRosado.isVisible = true
-]]
---[[
-local lineaRosada
-local cable
-local puntosLinea = {}  -- Almacenar los puntos de la línea
-
-local function dibujar(event)
-    local fase = event.phase
-
-    if fase == "began" then
-        display.getCurrentStage():setFocus(event.target)
-        event.target.isFocus = true
-
-        -- Crear la línea rosada
-        --lineaRosada = display.newLine(event.x, event.y, event.x, event.y)
-        --lineaRosada:setStrokeColor(1, 0.4, 0.4)  -- Color rosado
-        --lineaRosada.strokeWidth = 5
-
-        -- Crear la línea roja inicial con la misma posición que la línea rosada
-        cable = display.newLine (event.x, event.y, event.x, event.y )
-        cable:setStrokeColor(1, 0, 0)  -- Color rojo
-        cable.strokeWidth = 5
-
-        -- Almacenar el punto inicial en la tabla
-        puntosLinea = {
-            {x = event.x, y = event.y}
-        }
-
-    elseif event.target and event.target.isFocus then
-        if fase == "moved" then
-            -- Actualizar la línea rosada mientras se mueve el mouse
-            --lineaRosada:append(event.x, event.y)
-
-            -- Almacenar el punto en la tabla
-            table.insert(puntosLinea, {x = event.x, y = event.y})
-
-            -- Actualizar la línea roja con los puntos de la tabla
-            cable:removeSelf()  -- Eliminar la línea roja anterior
-            cable = display.newLine(puntosLinea[1].x, puntosLinea[1].y, puntosLinea[#puntosLinea].x, puntosLinea[#puntosLinea].y)
-            cable:setStrokeColor(1, 0, 0)  -- Color rojo
-            cable.strokeWidth = 5
-
-        elseif fase == "ended" or fase == "cancelled" then
-            display.getCurrentStage():setFocus(nil)
-            event.target.isFocus = false
-        end
-    end
-
-    return true
-end
-
-]]
-
---local lineaRosada
 local cables = {}
 local puntosLinea = {}  -- Almacenar los puntos de la línea
 local colores = {
@@ -198,11 +100,7 @@ end
 
 -- create()
 function scene:create( event )
- 
-    --for k,v in pairs(event.params) do
-      --  print(k,v)
-    --end
-    --indice_del_fondo = event.params.fondo
+
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     fondo = display.newImageRect(sceneGroup, rutaAssets.. "cables.jpg",CW, CH )
@@ -213,37 +111,7 @@ function scene:create( event )
     textoMenu = display.newText( "MENU", botonMenu.x, botonMenu.y , "Comic Sans MS", 10 )
     botonMenu.isVisible = false
     textoMenu.isVisible = false
-    -------------------------
-    --local lienzo = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
-    --lienzo:setFillColor(1)
-    --fondo:addEventListener("touch", tocar_cableRosado)
-
-
---[[
-    cableRosado = display.newLine( CW/2-100, CH/2-80, CW/2-80, CH/2-80 )
-    --cableRosado:append( CW/2,CH/2, CW, CH, 0,0 )
-    cableRosado:setStrokeColor( 1, 0, 1 )
-    cableRosado.strokeWidth = 5
-    cableRosado.isVisible = false
-]]
-    --[[
-    cableRosado = display.newLine( CW/2-100, CH/2-80, CW/2-80, CH/2-80)
-    --star:append( 105,-35, 43,16, 65,90, 0,45, -65,90, -43,15, -105,-35, -27,-35, 0,-110 )
-    cableRosado:setStrokeColor( 1, 0, 1 )
-    cableRosado.strokeWidth = 5
-    cableRosado.isVisible = false
-]]
-    --newRect( [parent,], x, y, width, height )
-    --[[
-    cableRosado = display.newRect( CW/2-100, CH/2-80, CW/2-80, CH/2-80 )
-    cableRosado:setStrokeColor( 1, 0, 1 )
-    cableRosado.isVisible = false
-]]
-
-
-    -- local icono = display.newImageRect(sceneGroup, "Icon.png",CW/2, CH/2 )
-    -- icono.x = CW/2; icono.y =CH/2
-    --fondo:addEventListener("touch", irMenu)
+    
 end
  
 -- show()
@@ -266,15 +134,6 @@ function scene:show( event )
         -- Code here runs when the scene is entirely on screen
         botonMenu:addEventListener("touch", irMenu)
 
-        -- Agregar un evento táctil a toda la pantalla
-        --display.getCurrentStage():addEventListener("touch", dibujar)
-
-        --fondo:addEventListener("touch", tocar_cableRosado)
-        --fondo:addEventListener("touch", tocar_cableRojo)
-
-        --cableRosado:addEventListener( "touch", tocar_cableRosado )
-        --cableRosado.isVisible = true
-
     end
 end
  
@@ -287,43 +146,22 @@ function scene:hide( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is on screen (but is about to go off screen)
-        --fondo:removeEventListener("touch", fondo)
         botonMenu:removeEventListener("touch", tocar_botonMenu)
         botonMenu.isVisible=false
         textoMenu.isVisible=false
 
         display.getCurrentStage():removeEventListener("touch", dibujar)
-        --lineaRosada:removeSelf()
-        --cable:removeSelf()
+
         for i = 1, #cables do
             cables[i].isVisible = false
             --cables[i]:remove
             --cables[i] = nil
         end
 
-        --lineasRosadas = {}
-        --cables = {}
         puntosLinea = {}
-
-        --fondo:removeEventListener("touch", tocar_cableRosado)
-        --cableRosado.isVisible=false
-
-        --fondo:removeEventListener("touch", tocar_cableRojo)
-        --cableRojo.isVisible=false
-
-        -- Agregar un evento táctil a toda la pantalla
-        --display.getCurrentStage():removeEventListener("touch", dibujar)
-        --cable.isVisible = false
-
-
-        --cableRosado:removeEventListener( "touch", tocar_cableRosado )
-        --cableRosado.isVisible = false
 
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
-
-        --botonMenu.isVisible=false
-        --textoMenu.isVisible=false
  
     end
 end
