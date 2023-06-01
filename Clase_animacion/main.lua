@@ -12,6 +12,8 @@ local CH = display.contentHeight
 local fondo = display.newImageRect("1.jpg", CW, CH)
 fondo.x = CW/2; fondo.y = CH/2
 
+local velocidad = 15
+
 local options = {
     width = 300,
     height = 300,
@@ -25,7 +27,7 @@ local options_special = {
 
 local personaje_sprite = graphics.newImageSheet("avanzaD.png", options )
 local personaje_special_sprite = graphics.newImageSheet("special.png", options_special)
-
+local personaje_caminar_izquierda = graphics.newImageSheet("avanzaL.png", options)
 
 local sequence = {
     {
@@ -50,13 +52,22 @@ local sequence = {
         time = 1000,
         sheet = personaje_special_sprite
 
+    },
+    {
+        name = "left_move",
+        -- start = 4,
+        -- count = 8,
+        frames = {4,3,2,1,8,7,6,5},
+        time = 600,
+        sheet = personaje_caminar_izquierda
+
     }
 
 }
 local personaje = display.newSprite(personaje_sprite, sequence)
 personaje.x = CW/2; personaje.y = CH/2
 personaje:scale(0.7, 0.7)
-personaje:setSequence("correr")
+personaje:setSequence("left_move")
 personaje:play()
 print(personaje.sequence, personaje.frame)
 
@@ -104,6 +115,38 @@ function animar(e)
     return true
 end
 
+function onKeyEvent(event)
+    --print(event.phase, event.keyName)
+    if event.keyName == "right" then
+        if personaje.isPlaying == false then 
+            personaje:setSequence("correr")
+            personaje:play()
+        end
+        if personaje.sequence ~= "correr" then
+            personaje:setSequence("correr")
+        end
+        if event.phase == "down" then
+            personaje:translate(velocidad, 0 )
+        end
+    elseif event.keyName == "left" then
+        if personaje.isPlaying == false then 
+            personaje:setSequence("left_move")
+            personaje:play()
+        end
+        if personaje.sequence ~= "left_move" then
+            personaje:setSequence("left_move")
+        end
+        if event.phase == "down" then
+            personaje:translate(-1*velocidad, 0 )
+            print(personaje.x)
+        end
+    end
+
+end
+
+
+
+Runtime:addEventListener("key", onKeyEvent)
 boton_atacar:addEventListener("touch", animar)
 boton_golpe:addEventListener("touch", animar)
 
