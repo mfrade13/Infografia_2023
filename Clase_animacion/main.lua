@@ -9,10 +9,22 @@
 local CW = display.contentWidth
 local CH = display.contentHeight
 
-local fondo = display.newImageRect("1.jpg", CW, CH)
+local grupoEscena = display.newGroup()
+local grupoFondo = display.newGroup()
+local grupoMedio = display.newGroup()
+local grupoInterfaz = display.newGroup()
+
+grupoEscena:insert(grupoFondo)
+grupoEscena:insert(grupoInterfaz)
+
+local fondo = display.newImageRect(grupoFondo, "1.jpg", CW, CH) -- mover con el personaje
 fondo.x = CW/2; fondo.y = CH/2
 
+local fondo2 = display.newImageRect(grupoFondo, "1.jpg", CW, CH) -- mover con el personaje
+fondo2.x = CW/2 - CW; fondo2.y = CH/2
+
 local velocidad = 15
+local escenario = 1
 
 local options = {
     width = 300,
@@ -64,22 +76,22 @@ local sequence = {
     }
 
 }
-local personaje = display.newSprite(personaje_sprite, sequence)
+local personaje = display.newSprite(grupoEscena,personaje_sprite, sequence)
 personaje.x = CW/2; personaje.y = CH/2
 personaje:scale(0.7, 0.7)
 personaje:setSequence("left_move")
 personaje:play()
 print(personaje.sequence, personaje.frame)
 
-local boton_atacar = display.newImageRect("atacar.png", 100,100)
+local boton_atacar = display.newImageRect(grupoInterfaz,"atacar.png", 100,100)
 boton_atacar.x = CW/4; boton_atacar.y = 200
 boton_atacar.animacion = "atacar"
 
-local boton_golpe = display.newImageRect("atacar.png", 100,100)
+local boton_golpe = display.newImageRect(grupoInterfaz,"atacar.png", 100,100)
 boton_golpe.x = CW*3/4; boton_golpe.y = boton_atacar.y
 boton_golpe.animacion = "golpe"
 
-local padD = display.newImageRect("pad.png", 150,150)
+local padD = display.newImageRect(grupoInterfaz, "pad.png", 150,150)
 padD.x = boton_golpe.x; padD.y = CH/4*3 
 
 local estaAtacando = false
@@ -127,7 +139,9 @@ function onKeyEvent(event)
         end
         if event.phase == "down" then
             personaje:translate(velocidad, 0 )
+            --grupoFondo:translate(-1*velocidad,0)
         end
+        print(personaje.x)
     elseif event.keyName == "left" then
         if personaje.isPlaying == false then 
             personaje:setSequence("left_move")
@@ -138,13 +152,41 @@ function onKeyEvent(event)
         end
         if event.phase == "down" then
             personaje:translate(-1*velocidad, 0 )
+            --grupoFondo:translate(velocidad,0)
             print(personaje.x)
         end
     end
 
 end
 
+function nuevaPantalla()
+    personaje.x = 20
+    transition.to(grupoEscena,{alpha = 1, time =1000, delay=500})
+    local paint = {
+        type = "image",
+        filename = "5.jpg"
+    }
+    fondo.fill = paint
+end
 
+function cambiarPantalla()
+    if escenario == 1 then
+        transition.to(grupoEscena, {alpha = 0.1, time = 1500, delay = 500, onComplete=nuevaPantalla})
+        escenario = 2
+    end
+end
+
+function camara(e)
+    -- if personaje.x > CW then -- verificacion si nos salimos de pantalla
+    --     print("Nos salimos de pantalla")
+    --     cambiarPantalla() -- mover la pantalla cuando el personaje excede el limite y desplegar un escenario nuevo con un efecto.
+    -- end
+
+    grupoEscena.x = -personaje.x  + CW/2 --defase 
+    grupoInterfaz.x = -grupoEscena.x
+end
+
+Runtime:addEventListener("enterFrame", camara)
 
 Runtime:addEventListener("key", onKeyEvent)
 boton_atacar:addEventListener("touch", animar)
