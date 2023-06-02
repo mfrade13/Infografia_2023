@@ -3,7 +3,7 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
-
+local physics = require "physics"
 -- Your code here
 
 local CW = display.contentWidth
@@ -13,6 +13,9 @@ local grupoEscena = display.newGroup()
 local grupoFondo = display.newGroup()
 local grupoMedio = display.newGroup()
 local grupoInterfaz = display.newGroup()
+
+physics.start()
+physics.setDrawMode("hybrid")
 
 grupoEscena:insert(grupoFondo)
 grupoEscena:insert(grupoInterfaz)
@@ -81,7 +84,20 @@ personaje.x = CW/2; personaje.y = CH/2
 personaje:scale(0.7, 0.7)
 personaje:setSequence("left_move")
 personaje:play()
+local personaje_body = {
+    halfWidth = 300 *0.3/ 2,
+    halfHeight =300 *0.4 / 2,
+    x=0,
+    y=10,
+    angle=00
+}
+physics.addBody(personaje, "dynami",{box=personaje_body, bounce = 1})
 print(personaje.sequence, personaje.frame)
+
+
+local piso = display.newRect(grupoFondo, CW/2, CH * 0.8, CW, 30)
+piso:setFillColor(0,1,0,0)
+physics.addBody(piso, "static")
 
 local boton_atacar = display.newImageRect(grupoInterfaz,"atacar.png", 100,100)
 boton_atacar.x = CW/4; boton_atacar.y = 200
