@@ -80,7 +80,7 @@ local sequence = {
 
 }
 local personaje = display.newSprite(grupoEscena,personaje_sprite, sequence)
-personaje.x = CW/2; personaje.y = CH/2
+personaje.x = CW/2; personaje.y = CH/4
 personaje:scale(0.7, 0.7)
 personaje:setSequence("left_move")
 personaje:play()
@@ -91,13 +91,23 @@ local personaje_body = {
     y=10,
     angle=00
 }
-physics.addBody(personaje, "dynami",{box=personaje_body, bounce = 1})
+
+
+physics.addBody(personaje, "dynami",{radius = 70, bounce = 0.6, friction = 0.0 })
 print(personaje.sequence, personaje.frame)
-
-
-local piso = display.newRect(grupoFondo, CW/2, CH * 0.8, CW, 30)
+personaje.isFixedRotation = true
+--personaje.gravityScale = 0
+local piso = display.newRect(grupoFondo, CW/2, CH * 0.9, CW, 30)
 piso:setFillColor(0,1,0,0)
-physics.addBody(piso, "static")
+piso.rotation = 0
+physics.addBody(piso, "static", {friction = 1})
+
+local esfera = display.newCircle(grupoEscena, personaje.x, CH/2, 20)
+physics.addBody(esfera, "dynamic", {radius = 20, density = 3.12, bounce = 0.6 })
+
+
+print(physics.getGravity())
+--physics.setGravity(-1, 1)
 
 local boton_atacar = display.newImageRect(grupoInterfaz,"atacar.png", 100,100)
 boton_atacar.x = CW/4; boton_atacar.y = 200
@@ -135,6 +145,7 @@ function animar(e)
             print(personaje.sequence)
             personaje:setSequence(e.target.animacion )
             personaje:play()
+            personaje:applyLinearImpulse(0, -2, personaje.x, personaje.y)
             timer.performWithDelay(2000, volverACmaniar)
         else
             print("ya esta atacando y debo esperar a que termine para ejectura de nuevo")
@@ -154,7 +165,9 @@ function onKeyEvent(event)
             personaje:setSequence("correr")
         end
         if event.phase == "down" then
-            personaje:translate(velocidad, 0 )
+            --personaje:translate(velocidad, 0 )
+            personaje:applyLinearImpulse(1,0)
+            print("velocidad de movimiento", personaje:getLinearVelocity())
             --grupoFondo:translate(-1*velocidad,0)
         end
         print(personaje.x)
@@ -167,7 +180,8 @@ function onKeyEvent(event)
             personaje:setSequence("left_move")
         end
         if event.phase == "down" then
-            personaje:translate(-1*velocidad, 0 )
+         --   personaje:translate(-1*velocidad, 0 )
+            personaje:applyLinearImpulse(-1,0)
             --grupoFondo:translate(velocidad,0)
             print(personaje.x)
         end
