@@ -1,5 +1,5 @@
 import cv2 
-
+import numpy as np
 
 print("hello world")
 
@@ -60,19 +60,22 @@ print(sumar(45, 22))
 
 cap = cv2.VideoCapture(0)
 texto_color = "Indefinida"
+
+limite_inferior = np.array([0,100,20])
+limite_superior = np.array([20, 255,255])
+
 while True:
     _, frame = cap.read()
 
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
     height, width, _ = frame.shape
-
     cw = int(width/2)
     ch = int(height/2)
 
     frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    pixel_center = frame_hsv[cw, ch]
+    mask = cv2.inRange(frame_hsv, limite_inferior, limite_superior)
 
+    pixel_center = frame_hsv[cw, ch]
     valor_color_de_la_imagen = pixel_center[0]
 
     if valor_color_de_la_imagen <= 5:
@@ -89,7 +92,11 @@ while True:
     cv2.putText(frame, texto_color, (10, 70), 0, 1.5, (255,0,0), 5)
     cv2.circle( frame, (cw, ch), 4, (255,0,0),3)
 
+    frame_mask = cv2.bitwise_and(frame, frame, mask=mask)
+
     cv2.imshow("video", frame)
+    cv2.imshow("mascara", mask)
+    cv2.imshow("mascara_colores", frame_mask)
     key = cv2.waitKey(1)
     if key == 27:
         break
